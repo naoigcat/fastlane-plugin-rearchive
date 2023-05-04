@@ -1,5 +1,3 @@
-fastlane_version "1.99.0"
-
 lane :test do
   create_sample_ipa
 
