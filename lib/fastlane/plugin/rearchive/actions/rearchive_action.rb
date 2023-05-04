@@ -70,7 +70,6 @@ module Fastlane
       def self.available_options
         [
           FastlaneCore::ConfigItem.new(key: :archive_path,
-                                  env_name: "FACELIFT_ARCHIVE_PATH",
                                description: "Path of the IPA or XCARCHIVE being modified",
                                   optional: true,
                                       type: String),
@@ -81,7 +80,6 @@ module Fastlane
                                       type: String),
 
           FastlaneCore::ConfigItem.new(key: :plist_file,
-                                  env_name: "FACELIFT_PLIST_FILE",
                                description: "The name of the plist file to modify, relative to the .app bundle`",
                                   optional: true,
                              default_value: "Info.plist",
@@ -98,7 +96,6 @@ module Fastlane
                                       type: Array),
 
           FastlaneCore::ConfigItem.new(key: :skip_delete_icons,
-                                    env_name: "FACELIFT_SKIP_DELETE_ICONS",
                                  description: "When true, the old icon files will not be deleted from the archive",
                                     optional: true,
                                default_value: false,
