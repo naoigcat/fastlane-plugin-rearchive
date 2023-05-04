@@ -14,24 +14,101 @@ fastlane add_plugin rearchive
 
 Modify files inside ipa/xcarchive for publishing multiple configurations without rearchiving.
 
-**Note to author:** Add a more detailed description about this plugin here. If your plugin contains multiple actions, make sure to mention them here.
-
 ## Example
 
 Check out the [example `Fastfile`](fastlane/Fastfile) to see how to use this plugin. Try it by cloning the repo, running `fastlane install_plugins` and `bundle exec fastlane test`.
 
-**Note to author:** Please set up a sample project to make it easy for users to explore what your plugin does. Provide everything that is necessary to try out the plugin in this project (including a sample Xcode/Android project if necessary)
+## Usage
+
+```ruby
+# Modify the application Info.plist
+act(
+  archive_path: "example/Example.xcarchive",
+
+  iconset: "example/Blue.appiconset",
+
+  # Set a hash of plist values
+  plist_values: {
+    ":CustomApplicationKey" => "Replaced!"
+  },
+
+  # Run a list of PlistBuddy commands
+  plist_commands: [
+    "Delete :DebugApplicationKey"
+  ]
+)
+
+# Modify a different application plist
+act(
+  archive_path: "example/Example.xcarchive",
+
+  # Using a relative path indicates a plist file inside the .app
+  plist_file: "GoogleService-Info.plist",
+
+  plist_values: {
+    ":TRACKING_ID" => "UA-22222222-22"
+  }
+)
+
+# Modify the xcarchive manifest plist
+act(
+  archive_path: "example/Example.xcarchive",
+
+  # Prefixing with a / allows you to target any plist in the archive
+  plist_file: "/Info.plist",
+
+  plist_values: {
+    ":TRACKING_ID" => "UA-22222222-22"
+  }
+)
+
+# Modify Info.plist in an IPA
+act(
+  archive_path: "example/Example.ipa",
+
+  iconset: "example/Blue.appiconset",
+
+  # Set a hash of plist values
+  plist_values: {
+    ":CustomApplicationKey" => "Replaced!"
+  },
+
+  # Run a list of PlistBuddy commands
+  plist_commands: [
+    "Delete :DebugApplicationKey"
+  ]
+)
+
+# Replace a file with a local one (files only - asset catalog items are not supported)
+act(
+  archive_path: "example/Example.ipa",
+
+  replace_files: {
+    "GoogleService-Info.plist" => "example/New-GoogleService-Info.plist"
+  }
+)
+
+# Remove a file (files only - asset catalog items are not supported)
+act(
+  archive_path: "example/Example.ipa",
+
+  remove_files: [
+    "GoogleService-Info.plist"
+  ]
+)
+```
 
 ## Run tests for this plugin
 
 To run both the tests, and code style validation, run
 
-```
+```sh
 rake
 ```
 
 To automatically fix many of the styling issues, use
-```
+
+```sh
 rubocop -a
 ```
 

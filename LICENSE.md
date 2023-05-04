@@ -1,5 +1,6 @@
 # The MIT License (MIT)
 
+Copyright © 2016 Richard Szalay <richard.szalay@mullenloweprofero.com>
 Copyright © 2023 naoigcat <17925623+naoigcat@users.noreply.github.com>
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
