@@ -26,11 +26,20 @@ module Fastlane
 
         result_lines = result.lines.map(&:chop)
 
-        raise "value is not an array: #{result_lines}" unless result_lines.first == "Array {"
+        case RUBY_PLATFORM
+        when "x86_64-linux", "aarch64-linux-gnu"
+          raise "value is not an array (#{RUBY_PLATFORM}): #{result_lines}" unless result_lines.first == "("
 
-        array_values = result_lines.drop(1).take(result_lines.size - 2)
+          result_lines.drop(1).take(result_lines.size - 2).map do |line|
+            line[1..line.size].sub(/,$/, "")
+          end
+        else
+          raise "value is not an array (#{RUBY_PLATFORM}): #{result_lines}" unless result_lines.first == "Array {"
 
-        return array_values.map { |line| line[4..line.size] }
+          result_lines.drop(1).take(result_lines.size - 2).map do |line|
+            line[4..line.size]
+          end
+        end
       end
 
       def parse_dict_keys(entry)
@@ -38,14 +47,20 @@ module Fastlane
 
         result_lines = entry.lines.map(&:chop)
 
-        raise "value is not an dict: #{result_lines}" unless result_lines.first == "Dict {"
+        case RUBY_PLATFORM
+        when "x86_64-linux", "aarch64-linux-gnu"
+          raise "value is not an dict (#{RUBY_PLATFORM}): #{result_lines}" unless result_lines.first == "{"
 
-        keys = result_lines
-               .map { |l| l.match(/^\s{4}([^\s}]+)/) }
-               .select { |l| l }
-               .map { |l| l[1] }
+          result_lines.map do |line|
+            line.match(/(?<=^\t)[^\s}]+/)
+          end
+        else
+          raise "value is not an dict (#{RUBY_PLATFORM}): #{result_lines}" unless result_lines.first == "Dict {"
 
-        return keys
+          result_lines.map do |line|
+            line.match(/(?<=^\s{4})[^\s}]+/)
+          end
+        end.compact.map(&:to_s)
       end
     end
   end
