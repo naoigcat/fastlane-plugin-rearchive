@@ -79,7 +79,6 @@ module Fastlane
               --compress-pngs
               --enable-on-demand-resources=YES
               --sticker-pack-identifier-prefix=#{plist_buddy.exec("Print CFBundleIdentifier")}.sticker-pack.
-              --development-region=English
               --target-device=iphone
               --target-device=ipad
               --minimum-deployment-target=#{plist_buddy.exec("Print MinimumOSVersion")}
