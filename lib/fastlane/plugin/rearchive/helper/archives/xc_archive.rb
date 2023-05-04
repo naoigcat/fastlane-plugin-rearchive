@@ -44,10 +44,6 @@ module Fastlane
         File.exist?(local_path(path))
       end
 
-      def clean
-        `rm -rf #{temp_dir.shellescape}/*`
-      end
-
       def self.extract_app_path(archive_path)
         plist_buddy = PlistBuddy.new("#{archive_path}/Info.plist")
 

@@ -3,16 +3,12 @@ require "fastlane_core/ui/ui"
 module Fastlane
   module RearchiveHelper
     class IPAArchive
-      def initialize(ipa_file, app_name = null, temp_dir = null)
+      def initialize(ipa_file, app_name = null)
         @ipa_file = ipa_file
-
-        @create_temp_dir = temp_dir.nil?
-        @temp_dir = Dir.mktmpdir if @create_temp_dir
+        @temp_dir = Dir.mktmpdir
         FastlaneCore::UI.verbose("Working in temp dir: #{@temp_dir}")
-
         @app_path = "Payload/#{app_name}" if app_name
         @app_path = IPAArchive.extract_app_path(@ipa_file) unless app_name
-
         raise "IPA does not contain #{@app_path}" unless contains("#{@app_path}/")
       end
 
@@ -63,11 +59,6 @@ module Fastlane
       def contains(path = nil)
         `zipinfo -1 #{@ipa_file.shellescape} #{path.shellescape}`
         $?.exitstatus.zero?
-      end
-
-      def clean
-        `rm -rf #{temp_dir.shellescape}` if @create_temp_dir
-        `rm -rf #{temp_dir.shellescape}/*` unless @create_temp_dir
       end
 
       def self.extract_app_path(archive_path)

@@ -18,7 +18,7 @@ module Fastlane
         if File.directory?(params[:archive_path])
           archive = RearchiveHelper::XCArchive.new(params[:archive_path], params[:app_name])
         else
-          archive = RearchiveHelper::IPAArchive.new(params[:archive_path], params[:app_name], params[:temp_dir])
+          archive = RearchiveHelper::IPAArchive.new(params[:archive_path], params[:app_name])
         end
 
         if params[:plist_file]
@@ -103,12 +103,6 @@ module Fastlane
           FastlaneCore::ConfigItem.new(key: :app_name,
                                   env_name: "FACELIFT_APP_NAME",
                                description: "The name of the .app file (including extension), will be extracted if not supplied",
-                                  optional: true,
-                                      type: String),
-
-          FastlaneCore::ConfigItem.new(key: :temp_dir,
-                                  env_name: "FACELIFT_TEMP_DIR",
-                               description: "The temporary directory to work from. One will be created if not supplied",
                                   optional: true,
                                       type: String),
 
