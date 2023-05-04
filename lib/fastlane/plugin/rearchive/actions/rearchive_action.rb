@@ -1,5 +1,5 @@
-require 'fastlane/action'
-require_relative '../helper/rearchive_helper'
+require "fastlane/action"
+require_relative "../helper/rearchive_helper"
 
 module Fastlane
   module Actions

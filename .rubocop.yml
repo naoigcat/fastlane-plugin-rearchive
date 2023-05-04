@@ -3,7 +3,7 @@ require:
 - rubocop/require_tools
 - rubocop-performance
 AllCops:
-  TargetRubyVersion: 2.6
+  TargetRubyVersion: 2.7
   NewCops: enable
   Include:
   - "**/*.rb"
@@ -123,7 +123,7 @@ Metrics/ParameterLists:
 Style/GuardClause:
   Enabled: false
 Style/StringLiterals:
-  Enabled: false
+  EnforcedStyle: double_quotes
 Style/ConditionalAssignment:
   Enabled: false
 Style/RedundantSelf:
