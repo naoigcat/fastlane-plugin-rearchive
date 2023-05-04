@@ -10,7 +10,7 @@ module Fastlane
         result = `/usr/libexec/PlistBuddy -c "#{command}" "#{@plist_file}"`
 
         if $?.exitstatus.nonzero?
-          UI.important "PlistBuddy command failed: #{result}"
+          UI.important("PlistBuddy command failed: #{result}")
           raise "PlistBuddy command failed failed with exit code #{$?.exitstatus} - #{result}"
         end
 

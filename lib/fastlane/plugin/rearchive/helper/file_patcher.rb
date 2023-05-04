@@ -20,7 +20,7 @@ module Fastlane
 
           relative_path = RearchiveHelper::ArchivePaths.expand(archive, file_to_delete)
 
-          archive.delete relative_path
+          archive.delete(relative_path)
         end
       end
     end

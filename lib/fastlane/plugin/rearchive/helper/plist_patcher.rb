@@ -6,15 +6,19 @@ module Fastlane
 
         UI.message("Patching Plist: #{plist_path}")
 
-        plist_buddy = PlistBuddy.new archive.local_path(plist_path)
+        plist_buddy = PlistBuddy.new(archive.local_path(plist_path))
 
-        values.each do |key, value|
-          plist_buddy.exec "Set #{key} #{value}"
-        end if values
+        if values
+          values.each do |key, value|
+            plist_buddy.exec("Set #{key} #{value}")
+          end
+        end
 
-        commands.each do |command|
-          plist_buddy.exec command
-        end if commands
+        if commands
+          commands.each do |command|
+            plist_buddy.exec(command)
+          end
+        end
 
         archive.replace(plist_path)
       end

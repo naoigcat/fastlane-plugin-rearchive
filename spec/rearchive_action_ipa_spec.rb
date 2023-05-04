@@ -1,10 +1,10 @@
 describe Fastlane::Actions::RearchiveAction do
-  describe '#run' do
-    describe 'ipa' do
+  describe "#run" do
+    describe "ipa" do
       before do
         @tmp_dir = Dir.mktmpdir
         @tmp_dir = File.join(@tmp_dir, "dir with spaces")
-        Dir.mkdir @tmp_dir
+        Dir.mkdir(@tmp_dir)
 
         @ipa_file = File.join(@tmp_dir, "Example.ipa")
 
@@ -17,8 +17,8 @@ describe Fastlane::Actions::RearchiveAction do
         FileUtils.rm_rf(@tmp_dir)
       end
 
-      context 'providing plist values' do
-        it 'defaults to info.plist' do
+      context "providing plist values" do
+        it "defaults to info.plist" do
           Fastlane::Actions::RearchiveAction.run(
             archive_path: @ipa_file,
             plist_values: {
@@ -31,7 +31,7 @@ describe Fastlane::Actions::RearchiveAction do
           expect(result).to eql("Replaced")
         end
 
-        it 'can use a different plist' do
+        it "can use a different plist" do
           Fastlane::Actions::RearchiveAction.run(
             archive_path: @ipa_file,
 
@@ -47,7 +47,7 @@ describe Fastlane::Actions::RearchiveAction do
           expect(result).to eql("UA-22222222-22")
         end
 
-        it 'can use a plist outside the app_dir' do
+        it "can use a plist outside the app_dir" do
           Fastlane::Actions::RearchiveAction.run(
             archive_path: @ipa_file,
 
@@ -63,7 +63,7 @@ describe Fastlane::Actions::RearchiveAction do
           expect(result).to eql("com.richardszalay.somethingelse")
         end
 
-        it 'can override app name' do
+        it "can override app name" do
           renamed_ipa_file = File.join(@tmp_dir, "NotExample.ipa")
           FileUtils.mv(@ipa_file, renamed_ipa_file)
 
@@ -71,7 +71,7 @@ describe Fastlane::Actions::RearchiveAction do
 
           Fastlane::Actions::RearchiveAction.run(
             archive_path: renamed_ipa_file,
-            app_name: 'Example.app',
+            app_name: "Example.app",
             plist_values: {
               ":CustomApplicationKey" => "Replaced"
             }
@@ -83,8 +83,8 @@ describe Fastlane::Actions::RearchiveAction do
         end
       end
 
-      context 'providing plist commands' do
-        it 'defaults to info.plist' do
+      context "providing plist commands" do
+        it "defaults to info.plist" do
           Fastlane::Actions::RearchiveAction.run(
             archive_path: @ipa_file,
             plist_commands: [
@@ -97,7 +97,7 @@ describe Fastlane::Actions::RearchiveAction do
           expect(result).to eql("NewValue")
         end
 
-        it 'can use a different plist' do
+        it "can use a different plist" do
           Fastlane::Actions::RearchiveAction.run(
             archive_path: @ipa_file,
 
@@ -114,8 +114,8 @@ describe Fastlane::Actions::RearchiveAction do
         end
       end
 
-      context 'providing an iconset' do
-        it 'deletes old icon files' do
+      context "providing an iconset" do
+        it "deletes old icon files" do
           Fastlane::Actions::RearchiveAction.run(
             archive_path: @ipa_file,
             iconset: "example/Blue.appiconset"
@@ -126,7 +126,7 @@ describe Fastlane::Actions::RearchiveAction do
           expect(result).to be false
         end
 
-        it 'can optionally not delete old icon files' do
+        it "can optionally not delete old icon files" do
           Fastlane::Actions::RearchiveAction.run(
             archive_path: @ipa_file,
             iconset: "example/Blue.appiconset",
@@ -138,7 +138,7 @@ describe Fastlane::Actions::RearchiveAction do
           expect(result).to be true
         end
 
-        it 'adds new icon files' do
+        it "adds new icon files" do
           Fastlane::Actions::RearchiveAction.run(
             archive_path: @ipa_file,
             iconset: "example/Blue.appiconset"
@@ -149,7 +149,7 @@ describe Fastlane::Actions::RearchiveAction do
           expect(result).to be true
         end
 
-        it 'excludes images without filenames' do
+        it "excludes images without filenames" do
           Fastlane::Actions::RearchiveAction.run(
             archive_path: @ipa_file,
             iconset: "example/Blue.appiconset"
@@ -160,7 +160,7 @@ describe Fastlane::Actions::RearchiveAction do
           expect(result).to be false
         end
 
-        it 'modifies the Info.plist' do
+        it "modifies the Info.plist" do
           Fastlane::Actions::RearchiveAction.run(
             archive_path: @ipa_file,
             iconset: "example/Blue.appiconset"
@@ -176,7 +176,7 @@ describe Fastlane::Actions::RearchiveAction do
 
         # TODO: More tests for other idioms (ie. iPad icons). These are supported, but there's no tests yet
 
-        it 'ignores :plist_file option' do
+        it "ignores :plist_file option" do
           Fastlane::Actions::RearchiveAction.run(
             archive_path: @ipa_file,
             plist_file: "GoogleService-Info.plist",
@@ -189,8 +189,8 @@ describe Fastlane::Actions::RearchiveAction do
         end
       end
 
-      context 'replacing files' do
-        it 'replaces app-relative files' do
+      context "replacing files" do
+        it "replaces app-relative files" do
           Fastlane::Actions::RearchiveAction.run(
             archive_path: @ipa_file,
             replace_files: {
@@ -203,7 +203,7 @@ describe Fastlane::Actions::RearchiveAction do
           expect(result).to eql("UA-123456789-12")
         end
 
-        it 'replaces archive-relative files' do
+        it "replaces archive-relative files" do
           Fastlane::Actions::RearchiveAction.run(
             archive_path: @ipa_file,
             replace_files: {
@@ -216,7 +216,7 @@ describe Fastlane::Actions::RearchiveAction do
           expect(result).to eql("NewExample")
         end
 
-        it 'adds if there is no file to replace' do
+        it "adds if there is no file to replace" do
           Fastlane::Actions::RearchiveAction.run(
             archive_path: @ipa_file,
             replace_files: {
@@ -230,8 +230,8 @@ describe Fastlane::Actions::RearchiveAction do
         end
       end
 
-      context 'delete files' do
-        it 'deletes app-relative paths' do
+      context "delete files" do
+        it "deletes app-relative paths" do
           Fastlane::Actions::RearchiveAction.run(
             archive_path: @ipa_file,
             remove_files: [
@@ -244,7 +244,7 @@ describe Fastlane::Actions::RearchiveAction do
           expect(result).to be false
         end
 
-        it 'deletes archive-relative files' do
+        it "deletes archive-relative files" do
           Fastlane::Actions::RearchiveAction.run(
             archive_path: @ipa_file,
             remove_files: [
@@ -260,7 +260,7 @@ describe Fastlane::Actions::RearchiveAction do
 
       def invoke_plistbuddy(command, plist)
         Dir.mktmpdir do |dir|
-          Dir.chdir dir do
+          Dir.chdir(dir) do
             `unzip -o -q #{@ipa_file.shellescape} #{plist.shellescape}`
 
             return `/usr/libexec/PlistBuddy -c "#{command}" "#{plist.shellescape}"`.strip
@@ -270,7 +270,7 @@ describe Fastlane::Actions::RearchiveAction do
 
       def archive_contains(path)
         Dir.mktmpdir do |dir|
-          Dir.chdir dir do
+          Dir.chdir(dir) do
             `zipinfo -1 #{@ipa_file.shellescape} #{path.shellescape} 2>&1`
 
             return $?.exitstatus.zero?

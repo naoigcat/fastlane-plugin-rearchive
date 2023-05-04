@@ -3,7 +3,7 @@ module Fastlane
     class XCArchive
       def initialize(xcarchive_path, app_name)
         @xcarchive_path = xcarchive_path
-        
+
         @app_path = "Products/Applications/#{app_name}" if app_name
         @app_path = "Products/#{XCArchive.extract_app_path(xcarchive_path)}" unless app_name
       end
@@ -34,7 +34,7 @@ module Fastlane
       end
 
       def contains(path = nil)
-        File.exist? local_path(path)
+        File.exist?(local_path(path))
       end
 
       def clean
@@ -42,9 +42,9 @@ module Fastlane
       end
 
       def self.extract_app_path(archive_path)
-        plist_buddy = PlistBuddy.new "#{archive_path}/Info.plist"
+        plist_buddy = PlistBuddy.new("#{archive_path}/Info.plist")
 
-        (plist_buddy.exec "Print :ApplicationProperties:ApplicationPath").strip
+        plist_buddy.exec("Print :ApplicationProperties:ApplicationPath").strip
       end
     end
   end

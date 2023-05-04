@@ -4,48 +4,56 @@ module Fastlane
       def self.run(params)
         raise "You must supply an :archive_path" unless params[:archive_path] || params[:ipa]
 
-        if params[:ipa] then
-          warn "The ipa parameter has been superceded by archive_path and may be removed in a future release"
+        if params[:ipa]
+          warn("The ipa parameter has been superceded by archive_path and may be removed in a future release")
           params[:archive_path] = params[:ipa]
         end
 
-        params[:archive_path] = File.expand_path params[:archive_path]
-        raise "Archive path #{params[:archive_path]} does not exist" unless File.exist? params[:archive_path]
+        params[:archive_path] = File.expand_path(params[:archive_path])
+        raise "Archive path #{params[:archive_path]} does not exist" unless File.exist?(params[:archive_path])
 
-        if File.directory? params[:archive_path] then
-          archive = RearchiveHelper::XCArchive.new params[:archive_path], params[:app_name]
+        if File.directory?(params[:archive_path])
+          archive = RearchiveHelper::XCArchive.new(params[:archive_path], params[:app_name])
         else
-          archive = RearchiveHelper::IPAArchive.new params[:archive_path], params[:app_name], params[:temp_dir]
+          archive = RearchiveHelper::IPAArchive.new(params[:archive_path], params[:app_name], params[:temp_dir])
         end
 
-        if params[:plist_file] then
+        if params[:plist_file]
           params[:plist_file] = RearchiveHelper::ArchivePaths.expand(archive, params[:plist_file])
         else
           params[:plist_file] = archive.app_path("Info.plist")
         end
 
-        RearchiveHelper::PlistPatcher.patch(
-          archive,
-          params[:plist_file],
-          params[:plist_values],
-          params[:plist_commands]
-        ) if params[:plist_values] or params[:plist_commands]
+        if params[:plist_values] || params[:plist_commands]
+          RearchiveHelper::PlistPatcher.patch(
+            archive,
+            params[:plist_file],
+            params[:plist_values],
+            params[:plist_commands]
+          )
+        end
 
-        RearchiveHelper::IconPatcher.patch(
-          archive,
-          params[:iconset],
-          !params[:skip_delete_icons]
-        ) if params[:iconset]
+        if params[:iconset]
+          RearchiveHelper::IconPatcher.patch(
+            archive,
+            params[:iconset],
+            !params[:skip_delete_icons]
+          )
+        end
 
-        RearchiveHelper::FilePatcher.replace(
-          archive,
-          params[:replace_files]
-        ) if params[:replace_files]
+        if params[:replace_files]
+          RearchiveHelper::FilePatcher.replace(
+            archive,
+            params[:replace_files]
+          )
+        end
 
-        RearchiveHelper::FilePatcher.remove(
-          archive,
-          params[:remove_files]
-        ) if params[:remove_files]
+        if params[:remove_files]
+          RearchiveHelper::FilePatcher.remove(
+            archive,
+            params[:remove_files]
+          )
+        end
       end
 
       def self.description
@@ -74,8 +82,8 @@ module Fastlane
                                   optional: true,
                        conflicting_options: [:ipa],
                             conflict_block: proc do |value|
-                              UI.user_error!("You can't use 'ipa' and 'archive_path' options in one run")
-                             end,
+                                              UI.user_error!("You can't use 'ipa' and 'archive_path' options in one run")
+                                            end,
                                       type: String),
 
           FastlaneCore::ConfigItem.new(key: :iconset,
@@ -122,17 +130,17 @@ module Fastlane
                                default_value: false,
                                         type: [TrueClass, FalseClass]),
 
-            FastlaneCore::ConfigItem.new(key: :replace_files,
-                                 description: "Files that should be replaced",
-                                    optional: true,
-                               default_value: false,
-                                        type: Hash),
+          FastlaneCore::ConfigItem.new(key: :replace_files,
+                               description: "Files that should be replaced",
+                                  optional: true,
+                             default_value: false,
+                                      type: Hash),
 
-            FastlaneCore::ConfigItem.new(key: :remove_files,
-                                 description: "Files that should be removed",
-                                    optional: true,
-                               default_value: false,
-                                        type: Array)
+          FastlaneCore::ConfigItem.new(key: :remove_files,
+                               description: "Files that should be removed",
+                                  optional: true,
+                             default_value: false,
+                                      type: Array)
         ]
       end
 

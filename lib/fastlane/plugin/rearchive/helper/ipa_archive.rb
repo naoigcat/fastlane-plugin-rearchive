@@ -3,7 +3,7 @@ module Fastlane
     class IPAArchive
       def initialize(ipa_file, app_name = null, temp_dir = null)
         @ipa_file = ipa_file
-        
+
         @create_temp_dir = temp_dir.nil?
         @temp_dir = Dir.mktmpdir if @create_temp_dir
         UI.verbose("Working in temp dir: #{@temp_dir}")
@@ -32,7 +32,7 @@ module Fastlane
           result = `unzip -o -q #{@ipa_file.shellescape} #{path.shellescape}`
 
           if $?.exitstatus.nonzero?
-            UI.important result
+            UI.important(result)
             raise "extract operation failed with exit code #{$?.exitstatus}"
           end
         end
@@ -65,7 +65,7 @@ module Fastlane
       end
 
       def self.extract_app_path(archive_path)
-        `zipinfo -1 #{archive_path.shellescape} "Payload/*.app/" | sed -n '1 p'`.strip().chomp('/')
+        `zipinfo -1 #{archive_path.shellescape} "Payload/*.app/" | sed -n '1 p'`.strip.chomp("/")
       end
     end
   end
