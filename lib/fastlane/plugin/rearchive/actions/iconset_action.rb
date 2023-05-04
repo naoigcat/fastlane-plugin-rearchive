@@ -70,7 +70,7 @@ module Fastlane
         Dir.mktmpdir do |dir|
           Dir.chdir(dir) do
             IO.popen(%W[
-              #{IO.popen("xcode-select -p", &:read).chomp}/usr/bin/actool
+              /usr/bin/actool
               --output-format human-readable-text
               --notices
               --warnings

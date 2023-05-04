@@ -17,18 +17,20 @@ jobs:
     - name: Install PlistBuddy
       run: |
         sudo apt-get update
-        sudo apt-get install -y cmake g++-10 git libpng-dev libxml2-dev make ninja-build pkg-config
-        sudo update-alternatives --install /usr/bin/gcc gcc /usr/bin/gcc-10 10
-        sudo update-alternatives --install /usr/bin/g++ g++ /usr/bin/g++-10 10
-        git clone --depth=1 https://github.com/screenplaydev/plutil
-        cd plutil
+        sudo apt-get install -y cmake g++-9 git libpng-dev libxml2-dev make ninja-build pkg-config
+        sudo update-alternatives --install /usr/bin/gcc gcc /usr/bin/gcc-9 9
+        sudo update-alternatives --install /usr/bin/g++ g++ /usr/bin/g++-9 9
+        git clone --depth=1 https://github.com/facebookarchive/xcbuild.git
+        cd xcbuild
         git submodule update --init
         sed -i -e $'/#include <cassert>/a#include <stdlib.h>' Libraries/plist/Sources/Format/Encoding.cpp
+        sed -i -e '/add_compile_options(-Wno-multichar -Wno-sign-compare)/a    add_compile_options(-Wno-address-of-packed-member)' CMakeLists.txt
+        sed -i -e '/add_compile_options(-Wno-multichar -Wno-sign-compare)/a    add_compile_options(-Wno-stringop-truncation)' CMakeLists.txt
         sudo make install
         sudo cp build/liblinenoise.so /usr/lib/
         sudo ln -s /usr/bin/PlistBuddy /usr/libexec/PlistBuddy
         cd ..
-        sudo rm -fr plutil
+        sudo rm -fr xcbuild
     - name: Set up Ruby
       uses: ruby/setup-ruby@v1
       with:
