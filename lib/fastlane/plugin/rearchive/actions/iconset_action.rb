@@ -56,13 +56,13 @@ module Fastlane
           idiom_suffix = idiom == "iphone" ? "" : "~#{idiom}"
           icons_plist_key = ":CFBundleIcons#{idiom_suffix}:CFBundlePrimaryIcon:CFBundleIconFiles"
           plist_buddy.exec("Add #{icons_plist_key} array")
-          icons.each do |i|
-            relative_path = archive.app_path((i[:target]).to_s)
+          icons.each do |icon|
+            relative_path = archive.app_path((icon[:target]).to_s)
             local_path = archive.local_path(relative_path)
-            system("cp #{i[:source].shellescape} #{local_path.shellescape}", exception: true)
+            system("cp #{icon[:source].shellescape} #{local_path.shellescape}", exception: true)
             archive.replace(relative_path)
           end
-          icons.map { |i| i[:name] }.uniq.each_with_index do |key, index|
+          icons.map { |icon| icon[:name] }.uniq.each_with_index do |key, index|
             plist_buddy.exec("Add #{icons_plist_key}:#{index} string #{key}")
           end
         end
