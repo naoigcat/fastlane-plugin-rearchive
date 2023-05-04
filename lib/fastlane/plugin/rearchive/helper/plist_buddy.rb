@@ -1,5 +1,5 @@
 module Fastlane
-  module ActHelper
+  module RearchiveHelper
     class PlistBuddy
       def initialize(plist_file)
         @plist_file = plist_file

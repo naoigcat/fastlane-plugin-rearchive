@@ -1,5 +1,5 @@
 module Fastlane
-  module ActHelper
+  module RearchiveHelper
     class IconPatcher
       def self.patch(archive, iconset_path, delete_old_iconset)
         plist_path = archive.app_path("Info.plist")

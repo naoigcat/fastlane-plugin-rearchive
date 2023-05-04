@@ -1,6 +1,6 @@
 module Fastlane
   module Actions
-    class ActAction < Action
+    class RearchiveAction < Action
       def self.run(params)
         raise "You must supply an :archive_path" unless params[:archive_path] || params[:ipa]
 
@@ -13,36 +13,36 @@ module Fastlane
         raise "Archive path #{params[:archive_path]} does not exist" unless File.exist? params[:archive_path]
 
         if File.directory? params[:archive_path] then
-          archive = ActHelper::XCArchive.new params[:archive_path], params[:app_name]
+          archive = RearchiveHelper::XCArchive.new params[:archive_path], params[:app_name]
         else
-          archive = ActHelper::IPAArchive.new params[:archive_path], params[:app_name], params[:temp_dir]
+          archive = RearchiveHelper::IPAArchive.new params[:archive_path], params[:app_name], params[:temp_dir]
         end
 
         if params[:plist_file] then
-          params[:plist_file] = ActHelper::ArchivePaths.expand(archive, params[:plist_file])
+          params[:plist_file] = RearchiveHelper::ArchivePaths.expand(archive, params[:plist_file])
         else
           params[:plist_file] = archive.app_path("Info.plist")
         end
 
-        ActHelper::PlistPatcher.patch(
+        RearchiveHelper::PlistPatcher.patch(
           archive,
           params[:plist_file],
           params[:plist_values],
           params[:plist_commands]
         ) if params[:plist_values] or params[:plist_commands]
 
-        ActHelper::IconPatcher.patch(
+        RearchiveHelper::IconPatcher.patch(
           archive,
           params[:iconset],
           !params[:skip_delete_icons]
         ) if params[:iconset]
 
-        ActHelper::FilePatcher.replace(
+        RearchiveHelper::FilePatcher.replace(
           archive,
           params[:replace_files]
         ) if params[:replace_files]
 
-        ActHelper::FilePatcher.remove(
+        RearchiveHelper::FilePatcher.remove(
           archive,
           params[:remove_files]
         ) if params[:remove_files]

@@ -22,7 +22,7 @@ Check out the [example `Fastfile`](fastlane/Fastfile) to see how to use this plu
 
 ```ruby
 # Modify the application Info.plist
-act(
+rearchive(
   archive_path: "example/Example.xcarchive",
 
   iconset: "example/Blue.appiconset",
@@ -39,7 +39,7 @@ act(
 )
 
 # Modify a different application plist
-act(
+rearchive(
   archive_path: "example/Example.xcarchive",
 
   # Using a relative path indicates a plist file inside the .app
@@ -51,7 +51,7 @@ act(
 )
 
 # Modify the xcarchive manifest plist
-act(
+rearchive(
   archive_path: "example/Example.xcarchive",
 
   # Prefixing with a / allows you to target any plist in the archive
@@ -63,7 +63,7 @@ act(
 )
 
 # Modify Info.plist in an IPA
-act(
+rearchive(
   archive_path: "example/Example.ipa",
 
   iconset: "example/Blue.appiconset",
@@ -80,7 +80,7 @@ act(
 )
 
 # Replace a file with a local one (files only - asset catalog items are not supported)
-act(
+rearchive(
   archive_path: "example/Example.ipa",
 
   replace_files: {
@@ -89,7 +89,7 @@ act(
 )
 
 # Remove a file (files only - asset catalog items are not supported)
-act(
+rearchive(
   archive_path: "example/Example.ipa",
 
   remove_files: [

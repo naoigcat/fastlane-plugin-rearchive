@@ -1,5 +1,5 @@
 module Fastlane
-  module ActHelper
+  module RearchiveHelper
     class ArchivePaths
       def self.expand(archive, path)
         path_dup = path.dup

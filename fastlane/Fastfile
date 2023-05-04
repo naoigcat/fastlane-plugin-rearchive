@@ -4,7 +4,7 @@ lane :test do
   create_sample_ipa
 
   # Modify Info.plist
-  act(
+  rearchive(
     archive_path: "example/Example.ipa",
     iconset: "example/Blue.appiconset",
 
@@ -20,7 +20,7 @@ lane :test do
   )
 
   # Modify a different plist
-  act(
+  rearchive(
     archive_path: "example/Example.ipa",
 
     plist_file: "GoogleService-Info.plist",

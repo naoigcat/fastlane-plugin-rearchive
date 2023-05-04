@@ -1,5 +1,5 @@
 module Fastlane
-  module ActHelper
+  module RearchiveHelper
     class XCArchive
       def initialize(xcarchive_path, app_name)
         @xcarchive_path = xcarchive_path
