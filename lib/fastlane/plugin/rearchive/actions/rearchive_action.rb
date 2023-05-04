@@ -1,10 +1,10 @@
 require "fastlane/action"
 require "fastlane_core/configuration/config_item"
+require_relative "../helper/archives/ipa_archive"
+require_relative "../helper/archives/xc_archive"
 require_relative "../helper/file_patcher"
 require_relative "../helper/icon_patcher"
-require_relative "../helper/ipa_archive"
 require_relative "../helper/plist_patcher"
-require_relative "../helper/xc_archive"
 
 module Fastlane
   module Actions

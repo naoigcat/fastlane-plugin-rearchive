@@ -1,5 +1,5 @@
 require "fastlane_core/ui/ui"
-require_relative "plist_buddy"
+require_relative "../plist_buddy"
 
 module Fastlane
   module RearchiveHelper
