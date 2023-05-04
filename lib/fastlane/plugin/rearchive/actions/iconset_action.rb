@@ -33,7 +33,8 @@ module Fastlane
             end
           end
           plist_buddy.exec("Delete #{icon_files_key}")
-        rescue RuntimeError => _e
+        rescue RuntimeError => e
+          FastlaneCore::UI.message(e)
           next
         end
         JSON.parse(File.read(iconset_manifest_path))["images"].select do |image|
