@@ -4,16 +4,14 @@ require_relative "../plist_buddy"
 module Fastlane
   module RearchiveHelper
     class XCArchive
-      def initialize(xcarchive_path, app_name)
-        @xcarchive_path = xcarchive_path
-
-        @app_path = "Products/Applications/#{app_name}" if app_name
-        @app_path = "Products/#{XCArchive.extract_app_path(xcarchive_path)}" unless app_name
+      def initialize(archive_path)
+        @archive_path = archive_path
+        @app_path = "Products/#{self.class.extract_app_path(archive_path)}"
       end
 
       # Returns the full path to the given file that can be modified
       def local_path(path)
-        "#{@xcarchive_path}/#{path}"
+        "#{@archive_path}/#{path}"
       end
 
       # Returns an archive-relative path to the given application file
@@ -40,13 +38,8 @@ module Fastlane
         Dir.glob(local_path(path)).each { |f| File.delete(f) }
       end
 
-      def contains(path = nil)
-        File.exist?(local_path(path))
-      end
-
       def self.extract_app_path(archive_path)
         plist_buddy = PlistBuddy.new("#{archive_path}/Info.plist")
-
         plist_buddy.exec("Print :ApplicationProperties:ApplicationPath").strip
       end
     end

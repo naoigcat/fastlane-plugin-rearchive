@@ -72,7 +72,6 @@ describe Fastlane::Actions::RearchiveAction do
 
           Fastlane::Actions::RearchiveAction.run(
             archive_path: renamed_archive_path,
-            app_name: "Example.app",
             plist_values: {
               ":CustomApplicationKey" => "Replaced"
             }

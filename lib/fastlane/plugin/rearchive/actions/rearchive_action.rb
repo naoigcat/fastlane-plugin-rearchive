@@ -16,9 +16,9 @@ module Fastlane
         raise "Archive path #{params[:archive_path]} does not exist" unless File.exist?(params[:archive_path])
 
         if File.directory?(params[:archive_path])
-          archive = RearchiveHelper::XCArchive.new(params[:archive_path], params[:app_name])
+          archive = RearchiveHelper::XCArchive.new(params[:archive_path])
         else
-          archive = RearchiveHelper::IPAArchive.new(params[:archive_path], params[:app_name])
+          archive = RearchiveHelper::IPAArchive.new(params[:archive_path])
         end
 
         if params[:plist_file]
@@ -96,15 +96,6 @@ module Fastlane
                                description: "Array of PlistBuddy commands to invoke",
                                   optional: true,
                                       type: Array),
-
-          # TODO: :force flag for ignoring command errors and auto-adding plist_values if non-existant
-
-          # Very optional
-          FastlaneCore::ConfigItem.new(key: :app_name,
-                                  env_name: "FACELIFT_APP_NAME",
-                               description: "The name of the .app file (including extension), will be extracted if not supplied",
-                                  optional: true,
-                                      type: String),
 
           FastlaneCore::ConfigItem.new(key: :skip_delete_icons,
                                     env_name: "FACELIFT_SKIP_DELETE_ICONS",

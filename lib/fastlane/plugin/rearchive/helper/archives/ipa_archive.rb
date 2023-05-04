@@ -3,13 +3,11 @@ require "fastlane_core/ui/ui"
 module Fastlane
   module RearchiveHelper
     class IPAArchive
-      def initialize(ipa_file, app_name = null)
-        @ipa_file = ipa_file
+      def initialize(archive_path)
+        @archive_path = archive_path
         @temp_dir = Dir.mktmpdir
         FastlaneCore::UI.verbose("Working in temp dir: #{@temp_dir}")
-        @app_path = "Payload/#{app_name}" if app_name
-        @app_path = IPAArchive.extract_app_path(@ipa_file) unless app_name
-        raise "IPA does not contain #{@app_path}" unless contains("#{@app_path}/")
+        @app_path = self.class.extract_app_path(@archive_path)
       end
 
       # Returns the full path to the given file that can be modified
@@ -31,7 +29,7 @@ module Fastlane
         FastlaneCore::UI.verbose("Extracting #{path}")
 
         Dir.chdir(@temp_dir) do
-          result = `unzip -o -q #{@ipa_file.shellescape} #{path.shellescape}`
+          result = `unzip -o -q #{@archive_path.shellescape} #{path.shellescape}`
 
           if $?.exitstatus.nonzero?
             FastlaneCore::UI.important(result)
@@ -44,7 +42,7 @@ module Fastlane
       def replace(path)
         FastlaneCore::UI.verbose("Replacing #{path}")
         Dir.chdir(@temp_dir) do
-          `zip -q #{@ipa_file.shellescape} #{path.shellescape}`
+          `zip -q #{@archive_path.shellescape} #{path.shellescape}`
         end
       end
 
@@ -52,13 +50,8 @@ module Fastlane
       def delete(path)
         FastlaneCore::UI.verbose("Deleting #{path}")
         Dir.chdir(@temp_dir) do
-          `zip -dq #{@ipa_file.shellescape} #{path.shellescape}`
+          `zip -dq #{@archive_path.shellescape} #{path.shellescape}`
         end
-      end
-
-      def contains(path = nil)
-        `zipinfo -1 #{@ipa_file.shellescape} #{path.shellescape}`
-        $?.exitstatus.zero?
       end
 
       def self.extract_app_path(archive_path)

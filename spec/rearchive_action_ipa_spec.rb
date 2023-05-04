@@ -71,7 +71,6 @@ describe Fastlane::Actions::RearchiveAction do
 
           Fastlane::Actions::RearchiveAction.run(
             archive_path: renamed_ipa_file,
-            app_name: "Example.app",
             plist_values: {
               ":CustomApplicationKey" => "Replaced"
             }
