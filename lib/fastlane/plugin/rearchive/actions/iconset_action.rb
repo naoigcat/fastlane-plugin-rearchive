@@ -63,8 +63,8 @@ module Fastlane
             archive.replace(relative_path)
           end.map do |icon|
             icon[:name]
-          end.uniq.each_with_index do |key, index|
-            plist_buddy.exec("Add #{icons_plist_key}:#{index} string #{key}")
+          end.uniq.each do |key|
+            plist_buddy.exec("Add #{icons_plist_key}: string #{key}")
           end
         end
         Dir.mktmpdir do |dir|
