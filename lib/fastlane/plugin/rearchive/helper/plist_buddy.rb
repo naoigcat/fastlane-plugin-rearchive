@@ -3,13 +3,13 @@ require "fastlane_core/ui/ui"
 module Fastlane
   module RearchiveHelper
     class PlistBuddy
-      def initialize(plist_file)
-        @plist_file = plist_file
+      def initialize(plist_path)
+        @plist_path = plist_path
       end
 
       def exec(command)
-        FastlaneCore::UI.verbose("/usr/libexec/PlistBuddy -c \"#{command}\" \"#{@plist_file}\"")
-        result = `/usr/libexec/PlistBuddy -c "#{command}" "#{@plist_file}"`
+        FastlaneCore::UI.verbose("/usr/libexec/PlistBuddy -c \"#{command}\" \"#{@plist_path}\"")
+        result = `/usr/libexec/PlistBuddy -c "#{command}" "#{@plist_path}"`
 
         if $?.exitstatus.nonzero?
           FastlaneCore::UI.important("PlistBuddy command failed: #{result}")

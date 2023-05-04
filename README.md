@@ -20,79 +20,80 @@ Check out the [example `Fastfile`](fastlane/Fastfile) to see how to use this plu
 
 ## Usage
 
+The `resign` is required after executing the following actions.
+
+Modify the application Info.plist.
+
 ```ruby
-# Modify the application Info.plist
-rearchive(
+plist_value(
   archive_path: "example/Example.xcarchive",
-
-  iconset: "example/Blue.appiconset",
-
-  # Set a hash of plist values
   plist_values: {
     ":CustomApplicationKey" => "Replaced!"
-  },
+  }
+)
+```
 
-  # Run a list of PlistBuddy commands
+Execute commands for the application Info.plist.
+
+```ruby
+plist_command(
+  archive_path: "example/Example.xcarchive",
   plist_commands: [
     "Delete :DebugApplicationKey"
   ]
 )
+```
 
-# Modify a different application plist
-rearchive(
+Replace icons of the application.
+
+```ruby
+iconset(
   archive_path: "example/Example.xcarchive",
+  iconset_path: "example/Blue.appiconset"
+)
+```
 
-  # Using a relative path indicates a plist file inside the .app
-  plist_file: "GoogleService-Info.plist",
+Modify a different application plist
 
+```ruby
+plist_value(
+  archive_path: "example/Example.xcarchive",
+  plist_path: "GoogleService-Info.plist",
   plist_values: {
     ":TRACKING_ID" => "UA-22222222-22"
   }
 )
+```
 
-# Modify the xcarchive manifest plist
-rearchive(
+Prefixing with a / allows you to target any plist in the archive.
+
+```ruby
+plist_value(
   archive_path: "example/Example.xcarchive",
-
-  # Prefixing with a / allows you to target any plist in the archive
-  plist_file: "/Info.plist",
-
+  plist_path: "/Info.plist",
   plist_values: {
     ":TRACKING_ID" => "UA-22222222-22"
   }
 )
+```
 
-# Modify Info.plist in an IPA
-rearchive(
+Replace a file with a local one (files only - asset catalog items are not supported)
+
+```ruby
+replace_file(
   archive_path: "example/Example.ipa",
-
-  iconset: "example/Blue.appiconset",
-
-  # Set a hash of plist values
-  plist_values: {
-    ":CustomApplicationKey" => "Replaced!"
-  },
-
-  # Run a list of PlistBuddy commands
-  plist_commands: [
-    "Delete :DebugApplicationKey"
-  ]
-)
-
-# Replace a file with a local one (files only - asset catalog items are not supported)
-rearchive(
-  archive_path: "example/Example.ipa",
-
-  replace_files: {
+  files: {
     "GoogleService-Info.plist" => "example/New-GoogleService-Info.plist"
   }
 )
+```
 
-# Remove a file (files only - asset catalog items are not supported)
-rearchive(
+Remove a file (files only - asset catalog items are not supported)
+
+```ruby
+remove_file(
   archive_path: "example/Example.ipa",
-
-  remove_files: [
+  files: [
     "GoogleService-Info.plist"
   ]
 )

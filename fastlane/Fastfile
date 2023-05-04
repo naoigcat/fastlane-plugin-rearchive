@@ -1,39 +1,36 @@
 lane :test do
   create_sample_ipa
 
-  # Modify Info.plist
-  rearchive(
+  plist_value(
     archive_path: "example/Example.ipa",
-    iconset: "example/Blue.appiconset",
-
-    # Set a hash of plist values
     plist_values: {
       ":CustomApplicationKey" => "Replaced!"
-    },
-
-    # Run a list of PlistBuddy commands
-    plist_commands: [
-      "Delete :DebugApplicationKey"
-    ]
+    }
   )
-
-  # Modify a different plist
-  rearchive(
+  plist_value(
     archive_path: "example/Example.ipa",
-
-    plist_file: "GoogleService-Info.plist",
+    plist_path: "GoogleService-Info.plist",
     plist_values: {
       ":TRACKING_ID" => "UA-22222222-22"
     }
   )
+  plist_command(
+    archive_path: "example/Example.ipa",
+    plist_commands: [
+      "Delete :DebugApplicationKey"
+    ]
+  )
+  iconset(
+    archive_path: "example/Example.ipa",
+    iconset_path: "example/Blue.appiconset"
+  )
 
-  UI.message("IPA at example/Example.ipa has been reconfigured in-place, but will require 'resign' before it can be deployed")
+  UI.message("The example/Example.ipa has been reconfigured in-place, but will require 'resign' before it can be deployed")
 end
 
 # Pay no attention to the man behind the curtain
 private_lane :create_sample_ipa do
   File.delete("../example/Example.ipa") if File.exist?("../example/Example.ipa")
-
   Dir.chdir("../example/layout/") do
     sh("zip ../Example.ipa -r * ")
   end
