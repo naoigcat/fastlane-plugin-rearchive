@@ -1,3 +1,11 @@
+require "fastlane/action"
+require "fastlane_core/configuration/config_item"
+require_relative "../helper/file_patcher"
+require_relative "../helper/icon_patcher"
+require_relative "../helper/ipa_archive"
+require_relative "../helper/plist_patcher"
+require_relative "../helper/xc_archive"
+
 module Fastlane
   module Actions
     class RearchiveAction < Action
@@ -72,7 +80,7 @@ module Fastlane
                                   optional: true,
                        conflicting_options: [:archive_path],
                             conflict_block: proc do |value|
-                              UI.user_error!("You can't use 'ipa' and 'archive_path' options in one run")
+                              FastlaneCore::UI.user_error!("You can't use 'ipa' and 'archive_path' options in one run")
                             end,
                                       type: String),
 
@@ -82,7 +90,7 @@ module Fastlane
                                   optional: true,
                        conflicting_options: [:ipa],
                             conflict_block: proc do |value|
-                                              UI.user_error!("You can't use 'ipa' and 'archive_path' options in one run")
+                                              FastlaneCore::UI.user_error!("You can't use 'ipa' and 'archive_path' options in one run")
                                             end,
                                       type: String),
 

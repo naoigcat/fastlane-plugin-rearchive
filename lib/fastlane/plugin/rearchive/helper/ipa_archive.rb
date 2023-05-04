@@ -1,3 +1,5 @@
+require "fastlane_core/ui/ui"
+
 module Fastlane
   module RearchiveHelper
     class IPAArchive
@@ -6,7 +8,7 @@ module Fastlane
 
         @create_temp_dir = temp_dir.nil?
         @temp_dir = Dir.mktmpdir if @create_temp_dir
-        UI.verbose("Working in temp dir: #{@temp_dir}")
+        FastlaneCore::UI.verbose("Working in temp dir: #{@temp_dir}")
 
         @app_path = "Payload/#{app_name}" if app_name
         @app_path = IPAArchive.extract_app_path(@ipa_file) unless app_name
@@ -26,13 +28,13 @@ module Fastlane
 
       # Extract files to the temp dir
       def extract(path)
-        UI.verbose("Extracting #{path}")
+        FastlaneCore::UI.verbose("Extracting #{path}")
 
         Dir.chdir(@temp_dir) do
           result = `unzip -o -q #{@ipa_file.shellescape} #{path.shellescape}`
 
           if $?.exitstatus.nonzero?
-            UI.important(result)
+            FastlaneCore::UI.important(result)
             raise "extract operation failed with exit code #{$?.exitstatus}"
           end
         end
@@ -40,7 +42,7 @@ module Fastlane
 
       # Restore extracted files from the temp dir
       def replace(path)
-        UI.verbose("Replacing #{path}")
+        FastlaneCore::UI.verbose("Replacing #{path}")
         Dir.chdir(@temp_dir) do
           `zip -q #{@ipa_file.shellescape} #{path.shellescape}`
         end
@@ -48,7 +50,7 @@ module Fastlane
 
       # Delete path inside the ipa
       def delete(path)
-        UI.verbose("Deleting #{path}")
+        FastlaneCore::UI.verbose("Deleting #{path}")
         Dir.chdir(@temp_dir) do
           `zip -dq #{@ipa_file.shellescape} #{path.shellescape}`
         end

@@ -1,9 +1,12 @@
+require "fastlane_core/ui/ui"
+require_relative "archive_paths"
+
 module Fastlane
   module RearchiveHelper
     class FilePatcher
       def self.replace(archive, file_values)
         file_values.each do |old_file, new_file|
-          UI.message("Replacing #{old_file}")
+          FastlaneCore::UI.message("Replacing #{old_file}")
 
           relative_path = RearchiveHelper::ArchivePaths.expand(archive, old_file)
           local_path = archive.local_path(relative_path)
@@ -16,7 +19,7 @@ module Fastlane
 
       def self.remove(archive, file_values)
         file_values.each do |file_to_delete|
-          UI.message("Deleting #{file_to_delete}")
+          FastlaneCore::UI.message("Deleting #{file_to_delete}")
 
           relative_path = RearchiveHelper::ArchivePaths.expand(archive, file_to_delete)
 

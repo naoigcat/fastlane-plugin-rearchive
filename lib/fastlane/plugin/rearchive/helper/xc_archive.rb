@@ -1,3 +1,6 @@
+require "fastlane_core/ui/ui"
+require_relative "plist_buddy"
+
 module Fastlane
   module RearchiveHelper
     class XCArchive
@@ -28,7 +31,7 @@ module Fastlane
 
       # Delete path inside the ipa
       def delete(path)
-        UI.verbose("Deleting #{path}")
+        FastlaneCore::UI.verbose("Deleting #{path}")
 
         Dir.glob(local_path(path)).each { |f| File.delete(f) }
       end

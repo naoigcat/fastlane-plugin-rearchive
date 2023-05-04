@@ -1,3 +1,6 @@
+require "fastlane_core/ui/ui"
+require_relative "plist_buddy"
+
 module Fastlane
   module RearchiveHelper
     class IconPatcher
@@ -5,7 +8,7 @@ module Fastlane
         plist_path = archive.app_path("Info.plist")
         archive.extract(plist_path)
 
-        UI.message("Patching icons from: #{iconset_path}")
+        FastlaneCore::UI.message("Patching icons from: #{iconset_path}")
 
         plist_buddy = PlistBuddy.new(archive.local_path(plist_path))
 

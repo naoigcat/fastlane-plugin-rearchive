@@ -1,3 +1,5 @@
+require "fastlane_core/ui/ui"
+
 module Fastlane
   module RearchiveHelper
     class PlistBuddy
@@ -6,11 +8,11 @@ module Fastlane
       end
 
       def exec(command)
-        UI.verbose("/usr/libexec/PlistBuddy -c \"#{command}\" \"#{@plist_file}\"")
+        FastlaneCore::UI.verbose("/usr/libexec/PlistBuddy -c \"#{command}\" \"#{@plist_file}\"")
         result = `/usr/libexec/PlistBuddy -c "#{command}" "#{@plist_file}"`
 
         if $?.exitstatus.nonzero?
-          UI.important("PlistBuddy command failed: #{result}")
+          FastlaneCore::UI.important("PlistBuddy command failed: #{result}")
           raise "PlistBuddy command failed failed with exit code #{$?.exitstatus} - #{result}"
         end
 
