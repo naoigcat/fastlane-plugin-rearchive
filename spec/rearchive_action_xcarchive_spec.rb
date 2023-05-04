@@ -240,7 +240,7 @@ describe Fastlane::RearchiveHelper::XCArchive do
   end
 
   def invoke_plistbuddy(command, plist)
-    IO.popen("/usr/libexec/PlistBuddy -c \"#{command}\" #{@archive_path.shellescape}/#{plist.shellescape}", &:read).strip
+    IO.popen("/usr/libexec/PlistBuddy -c \"#{command}\" #{@archive_path.shellescape}/#{plist.shellescape}", &:read).gsub(/\A\s*"?|"?\s*\z/m, "")
   end
 
   def archive_contains(path)

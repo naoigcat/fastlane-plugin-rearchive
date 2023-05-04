@@ -243,7 +243,7 @@ describe Fastlane::RearchiveHelper::IPAArchive do
     Dir.mktmpdir do |dir|
       Dir.chdir(dir) do
         system("unzip -o -q #{@ipa_file.shellescape} #{plist.shellescape}", exception: true)
-        IO.popen("/usr/libexec/PlistBuddy -c \"#{command}\" \"#{plist.shellescape}\"", &:read).chomp.strip
+        IO.popen("/usr/libexec/PlistBuddy -c \"#{command}\" #{plist.shellescape}", &:read).gsub(/\A\s*"?|"?\s*\z/m, "")
       end
     end
   end

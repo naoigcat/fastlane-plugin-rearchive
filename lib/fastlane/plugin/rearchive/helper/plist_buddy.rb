@@ -9,7 +9,7 @@ module Fastlane
 
       def exec(command)
         FastlaneCore::UI.verbose("/usr/libexec/PlistBuddy -c \"#{command}\" \"#{@plist_path}\"")
-        result = IO.popen("/usr/libexec/PlistBuddy -c \"#{command}\" \"#{@plist_path}\"", &:read).chomp
+        result = IO.popen("/usr/libexec/PlistBuddy -c \"#{command}\" \"#{@plist_path}\"", &:read).gsub(/\A\s*"?|"?\s*\z/m, "")
 
         if $?.exitstatus.nonzero?
           FastlaneCore::UI.important("PlistBuddy command failed: #{result}")

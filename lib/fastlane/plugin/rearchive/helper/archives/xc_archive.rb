@@ -41,7 +41,7 @@ module Fastlane
 
       def self.extract_app_path(archive_path)
         plist_buddy = PlistBuddy.new("#{archive_path}/Info.plist")
-        plist_buddy.exec("Print :ApplicationProperties:ApplicationPath").strip
+        plist_buddy.exec("Print :ApplicationProperties:ApplicationPath")
       end
     end
   end
