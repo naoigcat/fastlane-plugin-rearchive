@@ -44,11 +44,11 @@ describe Fastlane::RearchiveHelper::XCArchive do
             archive_path: @archive_path,
             plist_path: "/Info.plist",
             plist_values: {
-              ":ApplicationProperties:CFBundleIdentifier" => "com.richardszalay.somethingelse"
+              ":ApplicationProperties:CFBundleIdentifier" => "com.github.somethingelse"
             }
           )
           result = invoke_plistbuddy("Print :ApplicationProperties:CFBundleIdentifier", "Info.plist")
-          expect(result).to eql("com.richardszalay.somethingelse")
+          expect(result).to eql("com.github.somethingelse")
         end
       end
     end

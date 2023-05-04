@@ -14,6 +14,21 @@ jobs:
         key: ${{ runner.os }}-gem-${{ hashFiles('**/Gemfile') }}
         restore-keys: |
           ${{ runner.os }}-gem-
+    - name: Install PlistBuddy
+      run: |
+        sudo apt-get update
+        sudo apt-get install -y cmake g++-10 git libpng-dev libxml2-dev make ninja-build pkg-config
+        sudo update-alternatives --install /usr/bin/gcc gcc /usr/bin/gcc-10 10
+        sudo update-alternatives --install /usr/bin/g++ g++ /usr/bin/g++-10 10
+        git clone --depth=1 https://github.com/screenplaydev/plutil
+        cd plutil
+        git submodule update --init
+        sed -i -e $'/#include <cassert>/a#include <stdlib.h>' Libraries/plist/Sources/Format/Encoding.cpp
+        sudo make install
+        sudo cp build/liblinenoise.so /usr/lib/
+        sudo ln -s /usr/bin/PlistBuddy /usr/libexec/PlistBuddy
+        cd ..
+        sudo rm -fr plutil
     - name: Set up Ruby
       uses: ruby/setup-ruby@v1
       with:
