@@ -27,7 +27,7 @@ module Fastlane
         end
 
         if params[:plist_file]
-          params[:plist_file] = RearchiveHelper::ArchivePaths.expand(archive, params[:plist_file])
+          params[:plist_file] = archive.app_path(params[:plist_file])
         else
           params[:plist_file] = archive.app_path("Info.plist")
         end

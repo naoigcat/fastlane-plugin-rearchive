@@ -23,7 +23,11 @@ module Fastlane
 
       # Returns an archive-relative path to the given application file
       def app_path(path)
-        "#{@app_path}/#{path}"
+        if path.start_with?("/")
+          path.sub(%r{^/}, "")
+        else
+          "#{@app_path}/#{path}"
+        end
       end
 
       # Extract files to the temp dir
