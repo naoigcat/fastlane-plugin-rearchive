@@ -10,12 +10,7 @@ module Fastlane
   module Actions
     class RearchiveAction < Action
       def self.run(params)
-        raise "You must supply an :archive_path" unless params[:archive_path] || params[:ipa]
-
-        if params[:ipa]
-          warn("The ipa parameter has been superceded by archive_path and may be removed in a future release")
-          params[:archive_path] = params[:ipa]
-        end
+        raise "You must supply an :archive_path" unless params[:archive_path]
 
         params[:archive_path] = File.expand_path(params[:archive_path])
         raise "Archive path #{params[:archive_path]} does not exist" unless File.exist?(params[:archive_path])
@@ -74,24 +69,10 @@ module Fastlane
 
       def self.available_options
         [
-          FastlaneCore::ConfigItem.new(key: :ipa,
-                                  env_name: "FACELIFT_IPA",
-                               description: "Path of the IPA file being modified. Deprecated, use  archive_path",
-                                  optional: true,
-                       conflicting_options: [:archive_path],
-                            conflict_block: proc do |value|
-                              FastlaneCore::UI.user_error!("You can't use 'ipa' and 'archive_path' options in one run")
-                            end,
-                                      type: String),
-
           FastlaneCore::ConfigItem.new(key: :archive_path,
                                   env_name: "FACELIFT_ARCHIVE_PATH",
                                description: "Path of the IPA or XCARCHIVE being modified",
                                   optional: true,
-                       conflicting_options: [:ipa],
-                            conflict_block: proc do |value|
-                                              FastlaneCore::UI.user_error!("You can't use 'ipa' and 'archive_path' options in one run")
-                                            end,
                                       type: String),
 
           FastlaneCore::ConfigItem.new(key: :iconset,
