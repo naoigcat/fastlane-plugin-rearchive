@@ -10,7 +10,7 @@ Gem::Specification.new do |spec|
   spec.summary       = "Modify files inside ipa/xcarchive for publishing multiple configurations without rearchiving."
   spec.homepage      = "https://github.com/naoigcat/fastlane-plugin-rearchive"
   spec.license       = "MIT"
-  spec.files         = Dir["lib/**/*"] + %w(README.md LICENSE)
+  spec.files         = Dir["lib/**/*"] + %w(README.md LICENSE.md)
   spec.test_files    = spec.files.grep(%r{^(test|spec|features)/})
   spec.require_paths = ["lib"]
   spec.required_ruby_version = ">= 2.7"
