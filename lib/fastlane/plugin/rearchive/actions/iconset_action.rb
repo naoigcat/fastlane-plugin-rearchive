@@ -61,8 +61,9 @@ module Fastlane
             local_path = archive.local_path(relative_path)
             system("cp #{icon[:source].shellescape} #{local_path.shellescape}", exception: true)
             archive.replace(relative_path)
-          end
-          icons.map { |icon| icon[:name] }.uniq.each_with_index do |key, index|
+          end.map do |icon|
+            icon[:name]
+          end.uniq.each_with_index do |key, index|
             plist_buddy.exec("Add #{icons_plist_key}:#{index} string #{key}")
           end
         end
