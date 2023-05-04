@@ -71,19 +71,19 @@ module Fastlane
           Dir.chdir(dir) do
             IO.popen(%W[
               #{IO.popen("xcode-select -p", &:read).chomp}/usr/bin/actool
-              --output-format=human-readable-text
+              --output-format human-readable-text
               --notices
               --warnings
-              --output-partial-info-plist=assetcatalog_generated_info.plist
-              --app-icon=#{File.basename(iconset_path, ".appiconset")}
+              --output-partial-info-plist assetcatalog_generated_info.plist
+              --app-icon #{File.basename(iconset_path, ".appiconset")}
               --compress-pngs
-              --enable-on-demand-resources=YES
-              --sticker-pack-identifier-prefix=#{plist_buddy.exec("Print CFBundleIdentifier")}.sticker-pack.
-              --target-device=iphone
-              --target-device=ipad
-              --minimum-deployment-target=#{plist_buddy.exec("Print MinimumOSVersion")}
-              --platform=iphoneos
-              --product-type=com.apple.product-type.application
+              --enable-on-demand-resources YES
+              --sticker-pack-identifier-prefix #{plist_buddy.exec("Print CFBundleIdentifier")}.sticker-pack.
+              --target-device iphone
+              --target-device ipad
+              --minimum-deployment-target #{plist_buddy.exec("Print MinimumOSVersion")}
+              --platform iphoneos
+              --product-type com.apple.product-type.application
               --compile
               .
               #{File.dirname(iconset_path)}
