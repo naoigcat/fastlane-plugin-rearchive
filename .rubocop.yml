@@ -124,6 +124,8 @@ Style/GuardClause:
   Enabled: false
 Style/StringLiterals:
   EnforcedStyle: double_quotes
+Style/StringLiteralsInInterpolation:
+  EnforcedStyle: double_quotes
 Style/ConditionalAssignment:
   Enabled: false
 Style/RedundantSelf:

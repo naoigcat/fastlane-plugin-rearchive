@@ -1,3 +1,5 @@
+skip_docs
+
 lane :test do
   create_sample_ipa
 
@@ -22,7 +24,8 @@ lane :test do
   )
   iconset(
     archive_path: "example/Example.ipa",
-    iconset_path: "example/Blue.appiconset"
+    iconset_path: "example/Blue.appiconset",
+    verbose: true
   )
 
   UI.message("The example/Example.ipa has been reconfigured in-place, but will require 'resign' before it can be deployed")

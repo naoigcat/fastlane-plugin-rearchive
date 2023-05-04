@@ -7,7 +7,7 @@
 		<key>ApplicationPath</key>
 		<string>Applications/Example.app</string>
 		<key>CFBundleIdentifier</key>
-		<string>com.richardszalay.example</string>
+		<string>com.github.example</string>
 		<key>CFBundleShortVersionString</key>
 		<string>1.0.0</string>
 		<key>CFBundleVersion</key>

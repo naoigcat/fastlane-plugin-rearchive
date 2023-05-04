@@ -25,6 +25,7 @@ module Fastlane
 
       # Extract files to the temp dir
       def extract(path)
+        path
       end
 
       # Restore extracted files from the temp dir

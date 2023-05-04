@@ -27,22 +27,21 @@ module Fastlane
       # Extract files to the temp dir
       def extract(path)
         FastlaneCore::UI.verbose("Extracting #{path}")
-
         Dir.chdir(@temp_dir) do
-          result = `unzip -o -q #{@archive_path.shellescape} #{path.shellescape}`
-
+          result = IO.popen("unzip -o -q #{@archive_path.shellescape} #{path.shellescape}", &:read).chomp
           if $?.exitstatus.nonzero?
             FastlaneCore::UI.important(result)
             raise "extract operation failed with exit code #{$?.exitstatus}"
           end
         end
+        path
       end
 
       # Restore extracted files from the temp dir
       def replace(path)
         FastlaneCore::UI.verbose("Replacing #{path}")
         Dir.chdir(@temp_dir) do
-          `zip -q #{@archive_path.shellescape} #{path.shellescape}`
+          system("zip -q #{@archive_path.shellescape} #{path.shellescape}", exception: true)
         end
       end
 
@@ -50,12 +49,12 @@ module Fastlane
       def delete(path)
         FastlaneCore::UI.verbose("Deleting #{path}")
         Dir.chdir(@temp_dir) do
-          `zip -dq #{@archive_path.shellescape} #{path.shellescape}`
+          system("zip -dq #{@archive_path.shellescape} #{path.shellescape} >/dev/null 2>&1", exception: false)
         end
       end
 
       def self.extract_app_path(archive_path)
-        `zipinfo -1 #{archive_path.shellescape} "Payload/*.app/" | sed -n '1 p'`.strip.chomp("/")
+        IO.popen("zipinfo -1 #{archive_path.shellescape} \"Payload/*.app/\" | sed -n '1 p'", &:read).strip.chomp("/")
       end
     end
   end

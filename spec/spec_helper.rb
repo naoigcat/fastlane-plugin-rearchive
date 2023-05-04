@@ -12,4 +12,5 @@ end
 require "fastlane" # to import the Action super class
 require "fastlane/plugin/rearchive" # import the actual plugin
 
+FastlaneCore::UI.message("Logging disabled") unless ENV.fetch("DEBUG", false)
 Fastlane.load_actions # load other actions (in case your plugin calls other actions or shared values)

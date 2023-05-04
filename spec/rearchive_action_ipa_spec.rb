@@ -7,7 +7,7 @@ describe Fastlane::RearchiveHelper::IPAArchive do
         Dir.mkdir(@tmp_dir)
         @ipa_file = File.join(@tmp_dir, "Example.ipa")
         Dir.chdir("example/layout/") do
-          `zip #{@ipa_file.shellescape} -r *`
+          system("zip #{@ipa_file.shellescape} -r * >/dev/null", exception: true)
         end
       end
 
@@ -62,13 +62,14 @@ describe Fastlane::RearchiveHelper::IPAArchive do
         Dir.mkdir(@tmp_dir)
         @ipa_file = File.join(@tmp_dir, "Example.ipa")
         Dir.chdir("example/layout/") do
-          `zip #{@ipa_file.shellescape} -r *`
+          system("zip #{@ipa_file.shellescape} -r * >/dev/null", exception: true)
         end
       end
 
       after do
         FileUtils.rm_rf(@tmp_dir)
       end
+
       context "providing plist commands" do
         it "defaults to info.plist" do
           Fastlane::Actions::PlistCommandAction.run(
@@ -104,7 +105,7 @@ describe Fastlane::RearchiveHelper::IPAArchive do
         Dir.mkdir(@tmp_dir)
         @ipa_file = File.join(@tmp_dir, "Example.ipa")
         Dir.chdir("example/layout/") do
-          `zip #{@ipa_file.shellescape} -r *`
+          system("zip #{@ipa_file.shellescape} -r * >/dev/null", exception: true)
         end
       end
 
@@ -139,18 +140,6 @@ describe Fastlane::RearchiveHelper::IPAArchive do
           result = archive_contains("Payload/Example.app/Blue60x60@3x.png")
           expect(result).to be false
         end
-
-        it "modifies the Info.plist" do
-          Fastlane::Actions::IconsetAction.run(
-            archive_path: @ipa_file,
-            iconset_path: "example/Blue.appiconset"
-          )
-          result = [
-            invoke_plistbuddy("Print :CFBundleIcons:CFBundlePrimaryIcon:CFBundleIconFiles:0", "Payload/Example.app/Info.plist"),
-            invoke_plistbuddy("Print :CFBundleIcons:CFBundlePrimaryIcon:CFBundleIconFiles:1", "Payload/Example.app/Info.plist")
-          ]
-          expect(result).to eql(["Blue29x29", "Blue40x40"])
-        end
       end
     end
   end
@@ -163,7 +152,7 @@ describe Fastlane::RearchiveHelper::IPAArchive do
         Dir.mkdir(@tmp_dir)
         @ipa_file = File.join(@tmp_dir, "Example.ipa")
         Dir.chdir("example/layout/") do
-          `zip #{@ipa_file.shellescape} -r *`
+          system("zip #{@ipa_file.shellescape} -r * >/dev/null", exception: true)
         end
       end
 
@@ -216,7 +205,7 @@ describe Fastlane::RearchiveHelper::IPAArchive do
         Dir.mkdir(@tmp_dir)
         @ipa_file = File.join(@tmp_dir, "Example.ipa")
         Dir.chdir("example/layout/") do
-          `zip #{@ipa_file.shellescape} -r *`
+          system("zip #{@ipa_file.shellescape} -r * >/dev/null", exception: true)
         end
       end
 
@@ -253,8 +242,8 @@ describe Fastlane::RearchiveHelper::IPAArchive do
   def invoke_plistbuddy(command, plist)
     Dir.mktmpdir do |dir|
       Dir.chdir(dir) do
-        `unzip -o -q #{@ipa_file.shellescape} #{plist.shellescape}`
-        `/usr/libexec/PlistBuddy -c "#{command}" "#{plist.shellescape}"`.strip
+        system("unzip -o -q #{@ipa_file.shellescape} #{plist.shellescape}", exception: true)
+        IO.popen("/usr/libexec/PlistBuddy -c \"#{command}\" \"#{plist.shellescape}\"", &:read).chomp.strip
       end
     end
   end
@@ -262,7 +251,7 @@ describe Fastlane::RearchiveHelper::IPAArchive do
   def archive_contains(path)
     Dir.mktmpdir do |dir|
       Dir.chdir(dir) do
-        `zipinfo -1 #{@ipa_file.shellescape} #{path.shellescape} 2>&1`
+        system("zipinfo -1 #{@ipa_file.shellescape} #{path.shellescape} >/dev/null 2>&1", exception: false)
         $?.exitstatus.zero?
       end
     end

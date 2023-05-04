@@ -9,7 +9,7 @@ module Fastlane
 
       def exec(command)
         FastlaneCore::UI.verbose("/usr/libexec/PlistBuddy -c \"#{command}\" \"#{@plist_path}\"")
-        result = `/usr/libexec/PlistBuddy -c "#{command}" "#{@plist_path}"`
+        result = IO.popen("/usr/libexec/PlistBuddy -c \"#{command}\" \"#{@plist_path}\"", &:read).chomp
 
         if $?.exitstatus.nonzero?
           FastlaneCore::UI.important("PlistBuddy command failed: #{result}")
@@ -26,7 +26,7 @@ module Fastlane
 
         result_lines = result.lines.map(&:chop)
 
-        raise "value is not an array" unless result_lines.first == "Array {"
+        raise "value is not an array: #{result_lines}" unless result_lines.first == "Array {"
 
         array_values = result_lines.drop(1).take(result_lines.size - 2)
 
@@ -38,7 +38,7 @@ module Fastlane
 
         result_lines = entry.lines.map(&:chop)
 
-        raise "value is not an dict" unless result_lines.first == "Dict {"
+        raise "value is not an dict: #{result_lines}" unless result_lines.first == "Dict {"
 
         keys = result_lines
                .map { |l| l.match(/^\s{4}([^\s}]+)/) }

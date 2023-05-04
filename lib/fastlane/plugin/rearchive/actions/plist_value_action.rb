@@ -21,8 +21,8 @@ module Fastlane
         else
           plist_path = archive.app_path("Info.plist")
         end
-        archive.extract(plist_path)
         FastlaneCore::UI.message("Patching Plist: #{plist_path}")
+        archive.extract(plist_path)
         plist_buddy = RearchiveHelper::PlistBuddy.new(archive.local_path(plist_path))
         params[:plist_values].each do |key, value|
           plist_buddy.exec("Set #{key} #{value}")

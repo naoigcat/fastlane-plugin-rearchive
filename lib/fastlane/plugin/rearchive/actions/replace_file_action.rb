@@ -19,8 +19,8 @@ module Fastlane
           FastlaneCore::UI.message("Replacing #{old_file}")
           relative_path = archive.app_path(old_file)
           local_path = archive.local_path(relative_path)
-          `mkdir -p #{File.dirname(local_path).shellescape}`
-          `cp #{new_file.shellescape} #{local_path.shellescape}`
+          system("mkdir -p #{File.dirname(local_path).shellescape}", exception: true)
+          system("cp #{new_file.shellescape} #{local_path.shellescape}", exception: true)
           archive.replace(relative_path)
         end
       end

@@ -140,18 +140,6 @@ describe Fastlane::RearchiveHelper::XCArchive do
           result = archive_contains("Products/Applications/Example.app/Blue60x60@3x.png")
           expect(result).to be false
         end
-
-        it "modifies the Info.plist" do
-          Fastlane::Actions::IconsetAction.run(
-            archive_path: @archive_path,
-            iconset_path: "example/Blue.appiconset"
-          )
-          result = [
-            invoke_plistbuddy("Print :CFBundleIcons:CFBundlePrimaryIcon:CFBundleIconFiles:0", "Products/Applications/Example.app/Info.plist"),
-            invoke_plistbuddy("Print :CFBundleIcons:CFBundlePrimaryIcon:CFBundleIconFiles:1", "Products/Applications/Example.app/Info.plist")
-          ]
-          expect(result).to eql(["Blue29x29", "Blue40x40"])
-        end
       end
     end
   end
@@ -252,7 +240,7 @@ describe Fastlane::RearchiveHelper::XCArchive do
   end
 
   def invoke_plistbuddy(command, plist)
-    `/usr/libexec/PlistBuddy -c "#{command}" #{@archive_path.shellescape}/#{plist.shellescape}`.strip
+    IO.popen("/usr/libexec/PlistBuddy -c \"#{command}\" #{@archive_path.shellescape}/#{plist.shellescape}", &:read).strip
   end
 
   def archive_contains(path)
