@@ -40,7 +40,7 @@ module Fastlane
                                   optional: false,
                                       type: String),
 
-          FastlaneCore::ConfigItem.new(key: :replace_files,
+          FastlaneCore::ConfigItem.new(key: :files,
                                description: "Files that should be replaced",
                                   optional: false,
                                       type: Hash)
