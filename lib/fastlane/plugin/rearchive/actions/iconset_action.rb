@@ -59,6 +59,7 @@ module Fastlane
           icons.each do |icon|
             relative_path = archive.app_path((icon[:target]).to_s)
             local_path = archive.local_path(relative_path)
+            FastlaneCore::UI.message("Copy icon from #{icon[:source].shellescape} to #{local_path.shellescape}")
             system("cp #{icon[:source].shellescape} #{local_path.shellescape}", exception: true)
             archive.replace(relative_path)
           end.map do |icon|
@@ -69,6 +70,8 @@ module Fastlane
         end
         Dir.mktmpdir do |dir|
           Dir.chdir(dir) do
+            FastlaneCore::UI.message("Current Directory: #{dir}")
+            FastlaneCore::UI.message("Iconset: #{iconset_path}")
             IO.popen(%W[
               /usr/bin/actool
               --output-format human-readable-text
