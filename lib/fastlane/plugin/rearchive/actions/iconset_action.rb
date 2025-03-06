@@ -134,7 +134,7 @@ module Fastlane
                                description: "Display the output of commands",
                                   optional: true,
                              default_value: false,
-                                      type: [TrueClass, FalseClass])
+                                      type: Boolean)
         ]
       end
 
